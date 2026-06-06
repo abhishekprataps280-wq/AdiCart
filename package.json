@@ -1,0 +1,20 @@
+{
+  "name": "adicart",
+  "version": "1.0.0",
+  "description": "AdiCart E-commerce Platform – API & Frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev --port 8889",
+    "db:generate": "drizzle-kit generate",
+    "db:status": "netlify db status"
+  },
+  "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^3.1.10",
+    "drizzle-kit": "^1.0.0-beta.22"
+  }
+}
