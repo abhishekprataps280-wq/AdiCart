@@ -8,8 +8,17 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
-app.use(cors());
+// CORS Configuration
+app.use(cors({
+  origin: CORS_ORIGIN,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Serve frontend static files
@@ -21,18 +30,18 @@ let products = [
   {id:2,name:"Apple AirPods Pro 3",nameHi:"Apple AirPods Pro 3",category:"electronics",price:24999,original:29999,rating:4.7,reviews:1923,discount:17,badge:"new",emoji:"🎧",stock:15},
   {id:3,name:"Sony 4K OLED TV 55\"",nameHi:"Sony 4K OLED TV 55\"",category:"electronics",price:89999,original:120000,rating:4.6,reviews:876,discount:25,badge:"sale",emoji:"📺",stock:8},
   {id:4,name:"Dell XPS 15 Laptop",nameHi:"Dell XPS 15 लैपटॉप",category:"electronics",price:119999,original:149999,rating:4.9,reviews:654,discount:20,badge:"hot",emoji:"💻",stock:23},
-  {id:5,name:"Floral Summer Dress",nameHi:"फ्लोरल समर ड्रेस",category:"fashion",price:1299,original:2999,rating:4.5,reviews:3241,discount:57,badge:"sale",emoji:"👗",stock:120},
-  {id:6,name:"Men's Slim Fit Blazer",nameHi:"मेन्स स्लिम फिट ब्लेजर",category:"fashion",price:2499,original:5999,rating:4.4,reviews:1567,discount:58,badge:"sale",emoji:"🧥",stock:67},
-  {id:7,name:"Running Shoes Pro X",nameHi:"रनिंग शूज प्रो X",category:"fashion",price:3499,original:6999,rating:4.6,reviews:2109,discount:50,badge:"hot",emoji:"👟",stock:89},
-  {id:8,name:"Designer Handbag",nameHi:"डिज़ाइनर हैंडबैग",category:"fashion",price:4999,original:12000,rating:4.3,reviews:876,discount:58,badge:"new",emoji:"👜",stock:34},
-  {id:9,name:"Smart LED Desk Lamp",nameHi:"स्मार्ट LED डेस्क लैम्प",category:"home",price:1899,original:3499,rating:4.5,reviews:2341,discount:46,badge:"new",emoji:"💡",stock:56},
+  {id:5,name:"Floral Summer Dress",nameHi:"फ्लोरल समर ड्रेस",category:"fashion",price:1299,original:2999,rating:4.5,reviews:3241,discount:57,badge:"sale",emoji:"👗",stock:156},
+  {id:6,name:"Men's Slim Fit Blazer",nameHi:"मेन्स स्लिम फिट ब्लेजर",category:"fashion",price:2499,original:5999,rating:4.4,reviews:1567,discount:58,badge:"sale",emoji:"🧥",stock:89},
+  {id:7,name:"Running Shoes Pro X",nameHi:"रनिंग शूज प्रो X",category:"fashion",price:3499,original:6999,rating:4.6,reviews:2109,discount:50,badge:"hot",emoji:"👟",stock:234},
+  {id:8,name:"Designer Handbag",nameHi:"डिज़ाइनर हैंडबैग",category:"fashion",price:4999,original:12000,rating:4.3,reviews:876,discount:58,badge:"new",emoji:"👜",stock:45},
+  {id:9,name:"Smart LED Desk Lamp",nameHi:"स्मार्ट LED डेस्क लैम्प",category:"home",price:1899,original:3499,rating:4.5,reviews:2341,discount:46,badge:"new",emoji:"💡",stock:187},
   {id:10,name:"Air Purifier HEPA",nameHi:"Air Purifier HEPA",category:"home",price:12999,original:19999,rating:4.7,reviews:1234,discount:35,badge:"sale",emoji:"🌬️",stock:18},
-  {id:11,name:"Non-Stick Cookware Set",nameHi:"नॉन-स्टिक कुकवेयर सेट",category:"home",price:3999,original:7999,rating:4.6,reviews:3456,discount:50,badge:"hot",emoji:"🍳",stock:73},
-  {id:12,name:"Memory Foam Pillow",nameHi:"मेमोरी फोम तकिया",category:"home",price:1499,original:2999,rating:4.4,reviews:987,discount:50,badge:"new",emoji:"🛏️",stock:200},
+  {id:11,name:"Non-Stick Cookware Set",nameHi:"नॉन-स्टिक कुकवेयर सेट",category:"home",price:3999,original:7999,rating:4.6,reviews:3456,discount:50,badge:"hot",emoji:"🍳",stock:92},
+  {id:12,name:"Memory Foam Pillow",nameHi:"मेमोरी फोम तकिया",category:"home",price:1499,original:2999,rating:4.4,reviews:987,discount:50,badge:"new",emoji:"🛏️",stock:203},
   {id:13,name:"Vitamin C Serum",nameHi:"विटामिन C सीरम",category:"beauty",price:699,original:1499,rating:4.6,reviews:5678,discount:53,badge:"hot",emoji:"✨",stock:300},
-  {id:14,name:"Luxury Perfume Set",nameHi:"लग्जरी परफ्यूम सेट",category:"beauty",price:2999,original:5999,rating:4.5,reviews:1234,discount:50,badge:"sale",emoji:"🌸",stock:45},
-  {id:15,name:"Hair Dryer Pro 2000W",nameHi:"हेयर ड्रायर प्रो 2000W",category:"beauty",price:2499,original:4999,rating:4.4,reviews:2109,discount:50,badge:"new",emoji:"💇",stock:60},
-  {id:16,name:"Skincare Ritual Kit",nameHi:"स्किनकेयर रिचुअल किट",category:"beauty",price:1999,original:3999,rating:4.7,reviews:876,discount:50,badge:"hot",emoji:"🧴",stock:88},
+  {id:14,name:"Luxury Perfume Set",nameHi:"लग्जरी परफ्यूम सेट",category:"beauty",price:2999,original:5999,rating:4.5,reviews:1234,discount:50,badge:"sale",emoji:"🌸",stock:67},
+  {id:15,name:"Hair Dryer Pro 2000W",nameHi:"हेयर ड्रायर प्रो 2000W",category:"beauty",price:2499,original:4999,rating:4.4,reviews:2109,discount:50,badge:"new",emoji:"💇",stock:134},
+  {id:16,name:"Skincare Ritual Kit",nameHi:"स्किनकेयर रिचुअल किट",category:"beauty",price:1999,original:3999,rating:4.7,reviews:876,discount:50,badge:"hot",emoji:"🧴",stock:78}
 ];
 
 let orders = [];
@@ -482,7 +491,7 @@ app.get('/api/search', (req, res) => {
    HEALTH CHECK
 ══════════════════════════════════════ */
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString(), environment: NODE_ENV });
 });
 
 // 404 handler for unknown API routes
@@ -499,5 +508,6 @@ app.listen(PORT, () => {
   console.log(`\n🛒 AdiCart API running at http://localhost:${PORT}`);
   console.log(`📦 Products API: http://localhost:${PORT}/api/products`);
   console.log(`🛍️  Orders API:  http://localhost:${PORT}/api/orders`);
-  console.log(`👤 Auth API:    http://localhost:${PORT}/api/auth/register\n`);
+  console.log(`👤 Auth API:    http://localhost:${PORT}/api/auth/register`);
+  console.log(`🌍 Environment: ${NODE_ENV}\n`);
 });
